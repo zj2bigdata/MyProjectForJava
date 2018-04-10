@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 使用映射器时namesapce必须为详细接口地址,id必须为接口方法名 -->
+<mapper namespace="com.dao.ShopMapper">
+	<sql id="comm_sql">
+		<if test="_parameter.shopName!=null and _parameter.shopName !=''">
+				 shopname like '%${shopName}%'
+			</if>
+			<if test="shopAddress!=null and shopAddress !=''">
+				and shopaddress like '%${shopAddress}%'
+			</if>
+	</sql>
+	<!-- if语句 -->
+	<select id="queryIfByBase" parameterType="String" resultType="Shop">
+		select * from shop where 1=1
+		<!-- _parameter表示接口中的参数 -->
+		<if test="_parameter !=null and _parameter != ''">
+			and shopname like '%${value}%'
+		</if>
+	</select>
+	<!-- 多条if -->
+	<select id="queryIfByPojo" parameterType="Shop" resultType="Shop">
+		select * from shop where 
+		<!-- _parameter表示接口中的参数 -->
+		<if test="_parameter !=null ">
+			<include refid="comm_sql" />
+		</if>
+	</select>
+	<!-- choose, when, otherwise语句 -->
+	<select id="findActiveShopLike" parameterType="Shop" resultType="Shop">
+	  SELECT * FROM shop WHERE 1=1
+	  <if test="_parameter!=null  ">
+		  <choose>
+		    <when test="shopId != null and shopId!=''">
+		      AND shopid like #{shopId}
+		    </when>
+		    <when test="shopName != null and shopName != null">
+		      AND shopname like #{shopName}
+		    </when>
+		    <otherwise>
+		    </otherwise>
+		  </choose>
+	  </if>
+	</select>
+	<!-- 动态where -->
+	<select id="findWhere" parameterType="Shop" resultType="Shop">
+	  SELECT * FROM shop 
+	  <if test="_parameter!=null  ">
+		 <where>
+		 	<include refid="comm_sql" />
+		 </where>
+	  </if>
+	</select>
+	
+	<update id="">
+		update shop 
+		<set>
+			<if test="shopId!=null and shopId!=''">
+				shopid=#{shopId},
+			</if>
+			<if test="shopName!=null and shopName!=''">
+				shopname=#{shopName},
+			</if>
+			<if test="shopAddress!=null and shopAddress!=''">
+				shopaddress=#{shopAddress},
+			</if>
+			<if test="contact !=null and contact !=''">
+				contact=#{contact}
+			</if>
+		</set>
+	</update>
+	<!-- foreach:单参数List的类型 -->
+	<select id="findByList" resultType="Shop">
+		select * from shop where shopid in
+			<foreach collection="list" item="item"  open="(" separator="," close=")">
+		 	#{item}
+			</foreach>
+	</select>
+	<!-- foreach:单参数Array的类型 -->
+	<select id="findByArray" resultType="Shop">
+		select * from shop where shopid in
+			<foreach collection="array" item="item"  open="(" separator="," close=")">
+		 	#{item}
+			</foreach>
+	</select>
+	<!-- foreach:自己把参数封装成Map的类型 -->
+	<select id="findByMap" resultType="Shop">
+		select * from shop where shopid in
+			<foreach collection="ids" item="item"  open="(" separator="," close=")">
+		 	#{item}
+			</foreach>
+	</select>
+	<select id="getNameByPro" parameterType="map" statementType="CALLABLE">
+		call pro_getShopName(#{shopId},#{shopName,mode=OUT,jdbcType=VARCHAR})
+	</select>
+	<select id="getSap" resultMap="Sap">
+		select shop.shopid,shop.shopname,product.title,product.productdesc 
+		from shop inner join product on shop.shopid=product.shopid
+	</select>
+	
+	<resultMap type="com.pojo.ShopAndProduct" id="Sap">
+		<result property="shopId" column="shopid"/>
+		<result property="shopName" column="shopname"/>
+		<result property="title" column="title"/>
+		<result property="productDesc" column="productdesc"/>
+	</resultMap>
+</mapper>

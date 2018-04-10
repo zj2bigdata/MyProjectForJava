@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script>
+			$(function(){
+				$('#all').click(function() {
+					var all=$('#all').prop('checked');
+					$('input[id!="all"]').prop('checked',all);
+				});
+				$('input[id!="all"]').click(function() {
+					var l=$('input[id!="all"]').length;
+					var s=$('input[id!="all"]:checked').length;
+					if(l==s){
+						$('#all').prop('checked',true);
+					}else{
+						$('#all').prop('checked',false);
+					}
+				})
+				
+			});
+		</script>
+	</head>
+	<body>
+		<ul>
+			<li><input type="checkbox" id="all">全选</li>
+			<li><input type="checkbox" >香蕉</li>
+			<li><input type="checkbox">苹果</li>
+			<li><input type="checkbox">橘子</li>
+		</ul>
+	</body>
+</html>

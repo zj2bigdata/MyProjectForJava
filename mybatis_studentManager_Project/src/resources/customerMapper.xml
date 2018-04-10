@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="smp.customerDao.CustomerIF">
+  <select id="queryAllCustomer" resultType="smp.customer.Customer">
+    	select * from Customer
+  </select>
+  
+  <insert id="insertSingleCustomer" parameterType="smp.customer.Customer">
+  	<selectKey keyProperty="customerid" order="BEFORE" resultType="String">
+   			select SEQ_CUSTOMER_CUSTOMERID.nextval from dual
+   		</selectKey>
+  		insert into customer values(#{customerid},#{loginname},#{loginpwd})
+  </insert>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+	       <!-- 
+			<context:annotation-config/>
+			
+			<bean id="sd" class="com.dao.ShopDao"/>
+			<bean id="ss" class="com.service.ShopService"/>
+			-->
+	<context:component-scan base-package="com.*"/>
+	<!--
+    id：唯一标识(自定义)。
+	class：需要实例化的类，完整限定名(包名.类名)。
+	类似Shop shop=new Shop()
+	此处调用类的默认构造函数进行实例化。
+	spring容器实例化对象默认为单例模式.
+	scope属性:指定创建对象时每次都创建一个新的实例.
+	
+	<bean id="shop" class="com.pojo.Shop" >
+		<constructor-arg index="0" value="0"/>
+		
+	</bean>
+	-->
+	<!--  
+	<bean id="shop" class="com.pojo.Shop" >
+		<property name="shopId" value="10086" />
+		<property name="shopName" value="中国移动" />
+	</bean>
+	<bean id="sd" class="com.dao.ShopDao"></bean>
+	<bean id="ss" class="com.service.ShopService">
+		 ref引用其他实体bean的id属性
+		<property name="sd" ref="sd"></property>
+	</bean>
+	<bean id="CollectionArray" class="com.pojo.CollectionArray">
+		<property name="list" >
+			<list>
+				<value>我</value>
+				<value>的</value>
+				<value>中</value>
+				<value>国</value>
+				<value>梦</value>
+			</list>
+		</property>
+		<property name="set" >
+			<set>
+				<value>我</value>
+				<value>的</value>
+				<value>中</value>
+				<value>国</value>
+				<value>梦</value>
+			</set>
+		</property>
+		<property name="map">
+			<map>
+				<entry key="1" value="我"/>
+				<entry key="2" value="的"/>
+				<entry key="3" value="中"/>
+				<entry key="4" value="国"/>
+				<entry key="5" value="梦"/>
+			</map>
+		</property>
+		<property name="iArray">
+			<array>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+				<value>4</value>
+				<value>5</value>
+			</array>
+		</property>
+		<property name="pro">
+			<props>
+				<prop key="1">我</prop>
+				<prop key="2">的</prop>
+				<prop key="3">中</prop>
+				<prop key="4">国</prop>
+				<prop key="5">梦</prop>
+			</props>
+		</property>
+	</bean>
+	 -->
+</beans>

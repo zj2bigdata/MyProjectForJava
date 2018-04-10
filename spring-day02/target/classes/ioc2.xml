@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.2.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+		
+		<bean id="b1" class="ioc2.B"/>
+		<bean id="a1" class="ioc2.A">
+			<!--
+				constructor-arg元素:用来配置构造器方式的注入,其中
+				index属性指定参数的下标(从0开始).
+			  -->
+			<constructor-arg index="0" ref="b1" />
+		</bean>
+		
+		<bean id="wt" class="ioc2.Waiter"/>
+		<!-- 
+			autowire属性:让容器自动装配
+			1.(值为byName:容器依据属性名查找对应的bean,
+				然后调用对应的set方法来完成注入.找不到会注入空值null.
+				不可能找到多个符合条件的bean);
+			2.(值为byType:容器依据属性类型查找对应的bean,然后调用对应的set方法注入.
+				无值则为空,多值会报错)
+			3.custructor,与byType类似,会调用对应的构造器完成注入
+		 -->
+		<bean id="rest" class="ioc2.Restaurant" autowire="byType"></bean>
+		
+</beans>
+
+
+
+
+
+
+
+

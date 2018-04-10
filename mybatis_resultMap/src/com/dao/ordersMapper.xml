@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 使用映射器时namesapce必须为详细接口地址,id必须为接口方法名 -->
+<mapper namespace="com.dao.OrdersMapper">
+	<!-- 多对一实例 -->
+	<resultMap type="Orders" id="rm_orders">
+	<!--  
+	<id/>:用于映射主键列
+	<result/>:用于映射普通列
+	-->
+		<id property="ordersId" column="ordersid"/>
+		<result property="ordersDate" column="t"/>
+		<!-- 用来映射单方实体 -->
+		<association property="customer" javaType="Customer">
+			<id property="customerId" column="customerid"/>
+			<result property="customerName" column="customername"/>
+		</association>
+	</resultMap>
+	
+	<select id="many2One" resultMap="rm_orders">
+		select o.ordersid,o.customerid,customername,to_char(o.ordersdate,'yyyy-mm-dd') t
+		from orders o inner join customer c on o.customerid=c.customerid
+		order by o.ordersid
+	</select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.dao.ShopMapper">
+	<select id="queryAll" resultType="Shop">
+		select * from shop
+	</select>
+
+	<select id="queryLike" resultType="com.pojo.Shop">
+		select * from shop where shopname like '%${value}%'
+	</select>
+	
+	<select id="querySingle" resultType="com.pojo.Shop">
+		select * from shop where shopid=#{shopId}
+	</select>
+	
+	<select id="queryAllForMap" resultType="map">
+		select * from shop
+	</select>
+	
+	<insert id="addShop">
+		insert into shop values(#{shopId},#{shopName},#{shopAddress},#{contact})
+	</insert>
+	
+	<delete id="deleteShop">
+		delete from shop where shopid=#{aaa}
+	</delete>
+	
+	<update id="updateShop">
+		update shop set shopname=#{shopName},shopaddress=#{shopAddress},contact=#{contact} where shopid=#{shopId}
+	</update>
+</mapper>

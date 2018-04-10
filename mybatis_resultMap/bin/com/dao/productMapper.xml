@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 使用映射器时namesapce必须为详细接口地址,id必须为接口方法名 -->
+<mapper namespace="com.dao.ProductMapper">	 
+	 <!--  
+		many-to-one(多对一)映射：
+		id：唯一的标识符(自定义)。
+		type：指定返回类型(类的完全限定名或别名)。
+	-->
+	<resultMap id="many2oneResultMap" type="product">
+		<!--
+			id标签：用于映射主键字段。
+			property：实体的属性名。
+			column：查询的字段名(列名)。
+			将column指定的值映射为property指定的值。
+		-->
+		<id property="productId" column="productid"/>
+		<!-- result标签：用于映射普通字段 -->
+		<result property="title" column="title"/>
+		
+	<!--
+		association标签：用于关联主表(即one-to-one和many-to-one)。
+		javaType：property属性值对应的具体类型(类的完全限定名或别名)。
+	-->
+		<association property="shop" javaType="shop">
+			<result property="shopName" column="shopname"/>
+			<result property="shopAddress" column="shopaddress"/>
+		</association>
+	</resultMap>
+	
+	<select id="many2One" resultMap="many2oneResultMap">
+		select productid,title,shopname,shopaddress 
+		from product p inner join shop s on p.shopid=s.shopid order by productid
+	</select>
+	 
+</mapper>

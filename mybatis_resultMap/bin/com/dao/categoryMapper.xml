@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 使用映射器时namesapce必须为详细接口地址,id必须为接口方法名 -->
+<mapper namespace="com.dao.CategoryMapper">	 
+	<resultMap type="Category" id="category_rm">
+		<id property="categoryId" column="categoryid"/>
+		<result property="categoryName" column="categoryname"/>
+		<collection property="productList" ofType="Product">
+			<result property="title" column="title"/>
+			<result property="productDesc" column="productdesc"/>
+			<association property="area" javaType="Area">
+				<result property="areaName" column="areaname"/>
+			</association>
+		</collection>
+	</resultMap>
+	
+	<select id="many2Many" resultMap="category_rm">
+		select c.categoryid,categoryname,p.title,productdesc,a.areaname
+		from category c inner join product p on c.categoryid=p.categoryid 
+		inner join area a on p.areaid=a.areaid
+	</select>
+	 
+</mapper>

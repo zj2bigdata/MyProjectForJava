@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sun.dao.LineMapper">
+	<select id="findAll" resultType="line">
+		select * from line
+	</select>
+	<select id="findById" parameterType="string" resultType="line">
+			select * from line where lineID=${value}
+	</select>
+	<insert id="addLine" parameterType="line">
+		insert into line values(seq_line.nextval,#{lineName},#{days},#{price},#{vehicle},#{hotel},#{hasMeal})
+	</insert>
+	<update id="updateLine" parameterType="line">
+		update line set lineName=#{lineName},days=#{days},price=#{price},vehicle=#{vehicle},hotel=#{hotel},hasMeal=#{hasMeal} where lineID=#{lineID}
+	</update>
+	<delete id="deleteLine" parameterType="string">
+		delete from line where lineID=${value}
+	</delete>
+</mapper>

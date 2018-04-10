@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="smp.studentDao.StudentIF">
+  <select id="queryAllStudent" resultType="smp.student.Student">
+    	select * from student
+  </select>
+  <insert id="insertSingleStudent" parameterType="smp.student.Student">
+  	<selectKey keyProperty="stuid" order="BEFORE" resultType="String">
+   			select SEQ_STUDENT_STUID.nextval from dual
+   		</selectKey>
+  		insert into student values(#{stuid},#{name},#{gender},#{age},to_date(#{birthday},'yyyy-mm-dd'))
+  </insert>
+  <update id="updateSingleStudent" parameterType="smp.student.Student">
+  		update student set name=#{name},gender=#{gender},age=#{age},birthday=to_date(#{birthday},'yyyy-mm-dd') where stuid=#{stuid}
+  </update>
+  <delete id="deleteSingleStudent"  parameterType="smp.student.Student">
+  		delete from stu where stuid=#{abc}
+  </delete>
+</mapper>

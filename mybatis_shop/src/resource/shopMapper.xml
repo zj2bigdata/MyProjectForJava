@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ShopMapper">
+	 <!-- 
+			id:表示唯一标识, 
+			resultType:返回值类型
+		-->
+ 	<select id="queryAll" resultType="com.pojo.Shop">
+   	 	select * from shop
+  	</select>
+  		<select id="queryAllMap" resultType="map">
+   	 	select * from shop
+  	</select>
+  	<!-- 
+  			模糊查询
+			id:表示唯一标识, 
+			resultType:返回值类型
+			parameterType:参数类型
+			#{ }:代表'?',传入参数替代符
+			${value}:sql拼接符,如果传入参数为基本数据类型
+			#{abc}:如果传入参数为任意数据类型,比如对象,类,abc参数随意
+		-->
+  	<select id="queryLike" resultType="com.pojo.Shop">
+   	 	select * from shop where shopname like '%${value}%'
+  	</select>
+  	<!-- 根据id查询记录 -->
+  	<select id="queryLikeID" resultType="com.pojo.Shop">
+   	 	select * from shop where shopid= #{shopid}
+  	</select>
+  	<!-- 根据模糊关键字查询记录条数 -->
+  	<select id="queryCount" resultType="int">
+   	 	select count(*) from shop where shopname like '%${value}%'
+  	</select>
+  	<!-- 插入 -->
+   	<insert id="insertSingle">
+   	<!-- keyProperty:写ParameterType所对应的属性名
+   			order="BEFORE" 表示在执行insert之前产生序列值 
+   			resultType="String"指定返回值类型
+   		-->
+   		<selectKey keyProperty="shopId" order="BEFORE" resultType="String">
+   			select sqe_shop.nextval from dual
+   		</selectKey>
+  		insert into shop values(#{shopId},#{shopName},#{shopAddress},#{contact})
+	</insert>
+	<update id="updateSingle">
+  		update shop set
+    	shopName=#{shopName},shopAddress=#{shopAddress},contact=#{contact} where shopid = #{shopId}
+	</update>
+	<delete id="deleteSingle">
+  		delete from shop where shopid=#{a}
+	</delete>
+	<!-- 使用if标签 -->
+	<select id="querySingleShop" resultType="com.pojo.Shop">  
+    SELECT shopid,shopname,shopaddress,contact
+      FROM shop  
+     WHERE  
+    <if test="shopAddress!=null">
+    	shopaddress like '%${shopAddress}%'
+    </if>
+    <if test="shopName!=null">
+    	and shopid>5
+    </if>
+	</select>
+	<!-- sql动态更新 -->
+	<update id="updateSingleShop">
+	update shop
+		<trim prefix="set"  suffixOverrides=",">
+			<if test="shopName!=null">
+				shopName=#{shopName},
+			</if>
+			<if test="shopAddress!=null and shopAddress!='' ">
+				shopAddress=#{shopAddress}
+			</if>
+		</trim>
+	where shopid=10
+	</update>
+	  
+</mapper>

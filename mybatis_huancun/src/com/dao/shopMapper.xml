@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 使用映射器时namesapce必须为详细接口地址,id必须为接口方法名 -->
+<mapper namespace="com.dao.ShopMapper">
+	<cache />
+	 <!-- 
+			id:表示唯一标识, 一般取空间名属性值里的方法名
+			resultType:返回值类型(完整限定名或别名)
+		-->
+ 	<select id="cache" resultType="Shop">
+   	 	select * from shop
+  	</select>
+  	<update id="update" flushCache="false">
+  		update shop set  shopname=' ' where shopid=100
+  	</update>
+</mapper>

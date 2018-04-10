@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sun.dao.ShopMapper">
+	<select id="findAll" resultType="shop">
+		select * from shop
+	</select>
+	<select id="findById" parameterType="string" resultType="shop">
+			select * from shop where shopid=${value}
+	</select>
+	<insert id="addShop" parameterType="shop">
+		insert into shop values(SQE_SHOP.nextval,#{shopName},#{shopAddress},#{contact})
+	</insert>
+	<update id="updateShop" parameterType="shop">
+		update shop set shopname=#{shopName},shopaddress=#{shopAddress},contact=#{contact} where shopid=#{shopId}
+	</update>
+	<delete id="deleteShop" parameterType="string">
+		delete from shop where shopid=${value}
+	</delete>
+</mapper>

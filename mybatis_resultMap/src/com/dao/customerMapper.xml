@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 使用映射器时namesapce必须为详细接口地址,id必须为接口方法名 -->
+<mapper namespace="com.dao.CustomerMapper">
+	<!-- 一对多实例 -->
+	<resultMap type="Customer" id="rm_customer">
+	<!--  
+	<id/>:用于映射主键列
+	<result/>:用于映射普通列
+	-->
+	<result property="customerName" column="customername"/>
+		<!-- 用来映射多方实体 -->
+		<collection property="ordersList" ofType="Orders">
+			<result property="customerId" column="customerid"/>
+			<result property="ordersDate" column="t"/>
+		</collection>
+	</resultMap>
+	
+	 <select id="one2Many" resultMap="rm_customer">
+	 	select customername,o.customerid,to_char(o.ordersdate,'yyyy-mm-dd') as t
+	 	from customer s inner join orders o on s.customerid=o.customerid
+	 </select>
+	 
+	 <resultMap type="Orders" id="rm_orders">
+		<!--  
+		<id/>:用于映射主键列
+		<result/>:用于映射普通列
+		-->
+		<result property="customerName" column="customername"/>
+		<!-- 用来映射多方实体 -->
+		<collection property="ordersList" ofType="Orders">
+			<result property="customerId" column="customerid"/>
+			<result property="ordersDate" column="t"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 多对多 -->
+	<resultMap type="Customer" id="rm_customer2">
+		<!--  
+		<id/>:用于映射主键列
+		<result/>:用于映射普通列
+		-->
+		<!-- 映射customer表 -->
+		<result property="customerName" column="customername"/>
+		
+		<!-- 映射orders表 -->
+		<collection property="ordersList" ofType="Orders">
+			<id property="ordersId" column="ordersid"/>
+			<result property="ordersDate" column="ordersdate"/>
+			
+			<!-- 映射ordersdetail表 -->
+			<collection property="ordeList" ofType="OrdersDetail">
+				<result property="quantity" column="quantity"/>
+				
+				<!-- 映射product表 -->
+				<association property="product" javaType="Product">
+					<result property="title" column="title"/>
+					<result property="currentPrice" column="currentprice"/>
+				</association>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<select id="many2Many" resultMap="rm_customer2">
+	 	select customername,o.ordersid,to_char(ordersdate,'yyyy-mm-dd') ordersdate,
+  		quantity,title,to_char(currentprice,'fm9990.099') currentprice 
+  		from customer c inner join orders o on c.customerid=o.customerid 
+ 		inner join ordersdetail od on o.ordersid=od.ordersid 
+  		inner join product p on od.productid=p.productid order by customername
+	 </select>
+
+</mapper>
